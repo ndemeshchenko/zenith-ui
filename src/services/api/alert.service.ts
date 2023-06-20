@@ -4,6 +4,7 @@ import axios from 'axios'
 let queryInProgress: any
 
 export default {
+
   getAlerts(query: object) {
     if (query && queryInProgress) {
       queryInProgress.cancel('Too many search requests. Cancelling current query.')
@@ -15,13 +16,23 @@ export default {
     }
     return api.get('/api/alerts', config)
   },
+
+  getEnvs(query: object) {
+    const config = {
+      params: query,
+    }
+    return api.get('/api/environments', config)
+  },
+
   getAlert(id: string) {
     return api.get(`/api/alert/${id}`)
   },
+
   actionAlert(action: string, id: string) {
     if (action === 'delete') {
       return api.delete(`/api/alert/${id}`)
     }
     return api.patch(`/api/alert/${id}?action=${action}`)
   }
+
 }

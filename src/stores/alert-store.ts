@@ -39,22 +39,34 @@ export const useAlertStore = defineStore("alert", {
   state: () => {
     return {
       alerts: Array<Alert>,
+      environments: [],
       loading: false,
       alert: {
         type: "",
         message: "",
         show: false,
       },
+      alertsFilter: {},
+      envSelected: "",
       error: null,
     };
   },
 
   actions: {
+    makeFilter() {
+      console.log("makeFilter", this.envSelected)
+      if (this.envSelected) {
+        this.alertsFilter = { ...this.alertsFilter, environment: this.envSelected }
+      } else {
+        this.alertsFilter = {}
+      }
+    },
+
     async fetchAlerts() {
-      // this.alerts = new Array<Alert>()
       this.loading = true
       try {
-        this.alerts = await AlertsApi.getAlerts({})
+        console.log("fetchAlerts", this.alertsFilter)
+        this.alerts = await AlertsApi.getAlerts(this.alertsFilter)
       } catch (error) {
         this.error = error
         console.log(error)
@@ -62,6 +74,19 @@ export const useAlertStore = defineStore("alert", {
         this.loading = false
       }
     },
+
+    async fetchEnvMeta() {
+      this.loading = true
+      try {
+        this.environments = await AlertsApi.getEnvs({})
+      } catch (error) {
+        this.error = error
+        console.log(error)
+      } finally {
+        this.loading = false
+      }
+    },
+
     async fetchAlert(id: string) {
       this.loading = true
       try {
@@ -74,6 +99,7 @@ export const useAlertStore = defineStore("alert", {
         this.loading = false
       }
     },
+
     async actionAlert(id: string, action: string) {
       this.loading = true
       try {

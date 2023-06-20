@@ -29,6 +29,10 @@ Then, if you use npm:
 ```
 $ npm install
 
+# Export variable to point to Zenith API
+export VITE_ZENITH_ENDPOINT=http://api.zenithmonitor.com:8080
+export VITE_ZENITH_API_TOKEN=xxxxxx
+
 # serve with hot reload at localhost:8080 by default.
 $ npm run dev
 
