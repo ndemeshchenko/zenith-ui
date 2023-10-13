@@ -3,6 +3,7 @@
 ### Overview
 
 This project is a frontend web app for Zenith API monitoring backend.
+Web UI interface for [Zenith API monitoring](https://github.com/ndemeshchenko/zenith/tree/main) 
 
 ### Installation
 
