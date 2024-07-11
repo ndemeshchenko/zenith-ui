@@ -28,7 +28,8 @@
 <!--                </td>-->
                 <td>{{ hb.Cluster }}</td>
                 <td class="nowrap">
-                  <div>{{ hb.LastReceivedAt }}</div>
+<!--                  <div>{{ hb.LastReceivedAt }}</div>-->
+                  <div :title="hb.LastReceivedAt">{{ formatTimeDifference(hb.LastReceivedAt) }}</div>
                 </td>
                 <td>🔹 heartbeat monitor for cluster {{hb.Environment}}-{{hb.Cluster}}</td>
                 <td>
@@ -54,6 +55,7 @@
   import { storeToRefs } from 'pinia'
   // import { useAlertStore } from '../../stores/alert-store'
   import {useHeartbeatStore} from "../../stores/heartbeat-store";
+  import { formatDistanceToNow } from 'date-fns'
 
   const { heartbeats } = storeToRefs(useHeartbeatStore())
 
@@ -73,6 +75,10 @@
 
   const deleteAlert = (id: string) => {
     emit('action-alert', 'delete', id)
+  }
+
+  const formatTimeDifference = (timestamp: string) => {
+    return formatDistanceToNow(new Date(timestamp), { addSuffix: true })
   }
 </script>
 
