@@ -28,6 +28,11 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('../pages/admin/dashboard/Alerts.vue'),
       },
       {
+        name: 'heartbeats',
+        path: 'heartbeats',
+        component: () => import('../pages/admin/dashboard/Heartbeats.vue'),
+      },
+      {
         name: 'alert',
         path: 'alerts/:id',
         component: () => import('../pages/admin/dashboard/Alert.vue'),

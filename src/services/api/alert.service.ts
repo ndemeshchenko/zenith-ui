@@ -17,6 +17,18 @@ export default {
     return api.get('/api/alerts', config)
   },
 
+  getHeartbeats(query: object) {
+    if (query && queryInProgress) {
+      queryInProgress.cancel('Too many search requests. Cancelling current query.')
+    }
+    queryInProgress = axios.CancelToken.source()
+    const config = {
+      params: query,
+      cancelToken: queryInProgress.token
+    }
+    return api.get('/api/heartbeats', config)
+  },
+
   getEnvs(query: object) {
     const config = {
       params: query,

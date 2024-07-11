@@ -39,6 +39,7 @@ export const useAlertStore = defineStore("alert", {
   state: () => {
     return {
       alerts: Array<Alert>,
+      heartbeats: Array<Alert>,
       environments: [],
       loading: false,
       alert: {
@@ -62,11 +63,24 @@ export const useAlertStore = defineStore("alert", {
       }
     },
 
-    async fetchAlerts() {
+    fetchAlerts: async function () {
       this.loading = true
       try {
         console.log("fetchAlerts", this.alertsFilter)
         this.alerts = await AlertsApi.getAlerts(this.alertsFilter)
+      } catch (error) {
+        this.error = error
+        console.log(error)
+      } finally {
+        this.loading = false
+      }
+    },
+
+    fetchHeartbeats: async function () {
+      this.loading = true
+      try {
+        console.log("fetchHeartbeats")
+        this.heartbeats = await AlertsApi.getHeartbeats(this.alertsFilter)
       } catch (error) {
         this.error = error
         console.log(error)

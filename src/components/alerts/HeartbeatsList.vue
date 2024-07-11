@@ -1,43 +1,45 @@
 <template>
   <div class="markup-tables flex">
     <va-card class="flex mb-4">
-      <va-card-title>Alerts</va-card-title>
+      <va-card-title>Heartbeats monitors</va-card-title>
       <va-card-content>
         <div class="table-wrapper">
           <table class="va-table va-table--hoverable">
             <thead>
               <tr>
-                <th>Severity</th>
-                <th>Event</th>
+                <th>Status</th>
                 <th>Environment</th>
                 <th>Cluster</th>
-                <th>Update Time</th>
+                <th>Last Received At</th>
                 <th>Details</th>
               </tr>
             </thead>
 
             <tbody>
-              <tr v-for="alert in alerts" :key="alert.ID" @click="selectItem(alert.ID)" v-if="alerts.length > 0">
+              <tr v-for="hb in heartbeats" :key="hb.ID" @click="selectItem(hb.ID)" v-if="heartbeats.length > 0">
                 <td>
-                  <mark :class="'alert-severity alert-severity-' + alert.SeverityName">
-                    {{ alert.SeverityName }}
+                  <mark :class="hb.HasAlerts ? 'alert-severity alert-severity-critical' : 'alert-severity alert-severity-ok' ">
+                    {{ hb.HasAlerts ? 'Offline' : 'Online' }}
                   </mark>
                 </td>
-                <td>{{ alert.Event }}</td>
-                <td>{{ alert.Environment }}</td>
+                <td>{{ hb.Environment }}</td>
+<!--                <td>-->
+<!--                  <span class="badge badge-pill badge-dup">{{ alert.DuplicateCount }}</span>-->
+<!--                </td>-->
+                <td>{{ hb.Cluster }}</td>
                 <td class="nowrap">
-                  <div>{{ alert.Cluster }}</div>
+                  <div>{{ hb.LastReceivedAt }}</div>
                 </td>
-                <td>{{ $dayjs(alert.UpdateTime).format('DD/MM/YYYY HH:MM') }}</td>
+                <td>🔹 heartbeat monitor for cluster {{hb.Environment}}-{{hb.Cluster}}</td>
                 <td>
                   <div class="actions align-right">
                     <div class="action-buttons">
-                      <a href="#" @click.stop.prevent="ackAlert(alert.ID)">ACK</a>&nbsp;
-                      <a href="#" @click.stop.prevent="resolveAlert(alert.ID)">RESOLVE</a>&nbsp;
-                      <a href="#" @click.stop.prevent="deleteAlert(alert.ID)">DELETE</a>
+                      <a href="#" @click.stop.prevent="ackAlert(hb.ID)">ACK</a>&nbsp;
+                      <a href="#" @click.stop.prevent="resolveAlert(hb.ID)">RESOLVE</a>&nbsp;
+                      <a href="#" @click.stop.prevent="deleteAlert(hb.ID)">DELETE</a>
                     </div>
                   </div>
-                  {{ alert.Text }}
+                  {{ hb.Text }}
                 </td>
               </tr>
             </tbody>
@@ -50,9 +52,10 @@
 
 <script setup lang="ts">
   import { storeToRefs } from 'pinia'
-  import { useAlertStore } from '../../stores/alert-store'
+  // import { useAlertStore } from '../../stores/alert-store'
+  import {useHeartbeatStore} from "../../stores/heartbeat-store";
 
-  const { alerts } = storeToRefs(useAlertStore())
+  const { heartbeats } = storeToRefs(useHeartbeatStore())
 
   const emit = defineEmits(['set-alert'])
 
@@ -60,13 +63,13 @@
     emit('set-alert', id)
   }
 
-  const ackAlert = (id: string) => {
-    emit('action-alert', 'ackknowledge', id)
-  }
+  // const ackAlert = (id: string) => {
+  //   emit('action-alert', 'ackknowledge', id)
+  // }
 
-  const resolveAlert = (id: string) => {
-    emit('action-alert', 'resolve', id)
-  }
+  // const resolveAlert = (id: string) => {
+  //   emit('action-alert', 'resolve', id)
+  // }
 
   const deleteAlert = (id: string) => {
     emit('action-alert', 'delete', id)
@@ -135,6 +138,11 @@
 
   .alert-severity-critical {
     background-color: #dc3545;
+    color: white;
+  }
+
+  .alert-severity-ok {
+    background-color: #28a745;
     color: white;
   }
 

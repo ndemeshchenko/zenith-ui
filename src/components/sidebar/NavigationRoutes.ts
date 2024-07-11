@@ -25,6 +25,13 @@ export default {
         icon: 'fa-dog',
       },
     },
+    {
+      name: 'heartbeats',
+      displayName: 'menu.heartbeats',
+      meta: {
+        icon: 'fa-heart-pulse',
+      },
+    }
     // {
     //   name: 'statistics',
     //   displayName: 'menu.statistics',
