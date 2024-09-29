@@ -3,8 +3,13 @@
     <div class="flex xs12">
       <va-card class="fill-height" style="overflow-x: auto">
         <va-card-title>Environment filter</va-card-title>
-        <va-card-content class="card-flex">
-          <div v-for="env in environments"  :key="env.Name" v-if="environments.length > 0" class="env-filter-card" :class="[envSelected == env.Name ? 'env-selected' : '']">
+        <va-card-content v-if="environments.length > 0" class="card-flex">
+          <div
+            v-for="env in environments"
+            :key="env.Name"
+            class="env-filter-card"
+            :class="[envSelected == env.Name ? 'env-selected' : '']"
+          >
             <span @click="selectEnv(env.Name)">{{ env.Name }} ({{ env.Count }})</span>
           </div>
         </va-card-content>
@@ -37,7 +42,7 @@
 
   const selectEnv = (env: string) => {
     if (useAlertStore().envSelected === env) {
-      useAlertStore().envSelected = ""
+      useAlertStore().envSelected = ''
     } else {
       useAlertStore().envSelected = env
     }
@@ -64,7 +69,6 @@
     refreshAlerts()
     setInterval(refreshAlerts, 10000)
   })
-
 </script>
 
 <style lang="scss">

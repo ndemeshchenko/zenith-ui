@@ -13,7 +13,6 @@ export const useGlobalStore = defineStore('global', {
       this.isSidebarMinimized = !this.isSidebarMinimized
     },
 
-
     changeUserName(userName: string) {
       this.userName = userName
     },

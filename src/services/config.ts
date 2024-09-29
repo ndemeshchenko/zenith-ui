@@ -1,4 +1,4 @@
-import Axios, {AxiosResponse, AxiosInstance} from 'axios'
+import Axios, { AxiosInstance } from 'axios'
 
 class Config {
   private config: any = {}
@@ -9,25 +9,27 @@ class Config {
   private $http: AxiosInstance
 
   constructor() {
-      this.$http = Axios.create()
+    this.$http = Axios.create()
   }
 
-  public static API_URL = 'http://localhost:8080';
+  public static API_URL = 'http://localhost:8080'
 
   getConfig(): Promise<any> {
-    return this.getEnvConfig()
-      .then(response => {
-        return this.setEnvConfig(response)
-      })
-      // TODO - add remote config
-      // .then(response => {
-      //   const endpoint = this.config.endpoint ? this.config.endpoint : 'http://localhost:8080'
-      //   return this.getRemoteConfig(endpoint)
-      // })
-      .catch((error: any) => {
-        console.log(error)
-        throw error
-      })
+    return (
+      this.getEnvConfig()
+        .then((response) => {
+          return this.setEnvConfig(response)
+        })
+        // TODO - add remote config
+        // .then(response => {
+        //   const endpoint = this.config.endpoint ? this.config.endpoint : 'http://localhost:8080'
+        //   return this.getRemoteConfig(endpoint)
+        // })
+        .catch((error: any) => {
+          console.log(error)
+          throw error
+        })
+    )
   }
 
   getEnvConfig() {
@@ -36,7 +38,7 @@ class Config {
         endpoint: '',
         api_token: '',
         client_id: '',
-        tracking_id: ''
+        tracking_id: '',
       }
 
       if (import.meta.env['VITE_ZENITH_ENDPOINT']) {
@@ -65,10 +67,9 @@ class Config {
     return (this.config = {
       ...this.remoteConfig,
       ...this.localConfig,
-      ...this.envConfig
+      ...this.envConfig,
     })
   }
-
 }
 
 export default new Config()

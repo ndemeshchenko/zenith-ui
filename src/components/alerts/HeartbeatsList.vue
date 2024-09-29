@@ -15,23 +15,27 @@
               </tr>
             </thead>
 
-            <tbody>
-              <tr v-for="hb in heartbeats" :key="hb.ID" @click="selectItem(hb.ID)" v-if="heartbeats.length > 0">
+            <tbody v-if="heartbeats.length > 0">
+              <tr v-for="hb in heartbeats" :key="hb.ID" @click="selectItem(hb.ID)">
                 <td>
-                  <mark :class="hb.HasAlerts ? 'alert-severity alert-severity-critical' : 'alert-severity alert-severity-ok' ">
+                  <mark
+                    :class="
+                      hb.HasAlerts ? 'alert-severity alert-severity-critical' : 'alert-severity alert-severity-ok'
+                    "
+                  >
                     {{ hb.HasAlerts ? 'Offline' : 'Online' }}
                   </mark>
                 </td>
                 <td>{{ hb.Environment }}</td>
-<!--                <td>-->
-<!--                  <span class="badge badge-pill badge-dup">{{ alert.DuplicateCount }}</span>-->
-<!--                </td>-->
+                <!--                <td>-->
+                <!--                  <span class="badge badge-pill badge-dup">{{ alert.DuplicateCount }}</span>-->
+                <!--                </td>-->
                 <td>{{ hb.Cluster }}</td>
                 <td class="nowrap">
-<!--                  <div>{{ hb.LastReceivedAt }}</div>-->
+                  <!--                  <div>{{ hb.LastReceivedAt }}</div>-->
                   <div :title="hb.LastReceivedAt">{{ formatTimeDifference(hb.LastReceivedAt) }}</div>
                 </td>
-                <td>🔹 heartbeat monitor for cluster {{hb.Environment}}-{{hb.Cluster}}</td>
+                <td>🔹 heartbeat monitor for cluster {{ hb.Environment }}-{{ hb.Cluster }}</td>
                 <td>
                   <div class="actions align-right">
                     <div class="action-buttons">
@@ -54,24 +58,24 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia'
   // import { useAlertStore } from '../../stores/alert-store'
-  import {useHeartbeatStore} from "../../stores/heartbeat-store";
+  import { useHeartbeatStore } from '../../stores/heartbeat-store'
   import { formatDistanceToNow } from 'date-fns'
 
   const { heartbeats } = storeToRefs(useHeartbeatStore())
 
-  const emit = defineEmits(['set-alert'])
+  const emit = defineEmits(['set-alert', 'action-alert'])
 
   const selectItem = (id: string) => {
     emit('set-alert', id)
   }
 
-  // const ackAlert = (id: string) => {
-  //   emit('action-alert', 'ackknowledge', id)
-  // }
+  const ackAlert = (id: string) => {
+    emit('action-alert', 'ackknowledge', id)
+  }
 
-  // const resolveAlert = (id: string) => {
-  //   emit('action-alert', 'resolve', id)
-  // }
+  const resolveAlert = (id: string) => {
+    emit('action-alert', 'resolve', id)
+  }
 
   const deleteAlert = (id: string) => {
     emit('action-alert', 'delete', id)

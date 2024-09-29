@@ -1,24 +1,25 @@
-import { defineStore } from "pinia";
+import { defineStore } from 'pinia'
 import AlertsApi from '../services/api/alert.service'
 
-class Heartbeat {
-  // ID: string = "";
-  Environment: string = "";
-  Status: string = "";
-  Text: string = "";
-  LastReceivedAt: string = "";
+interface Heartbeat {
+  ID: string
+  Environment: string
+  Cluster: string
+  Status: string
+  Text: string
+  LastReceivedAt: string
+  HasAlerts: boolean
 }
 
-
-
-export const useHeartbeatStore = defineStore("alert", {
+export const useHeartbeatStore = defineStore('alert', {
   state: () => {
     return {
-      heartbeats: Array<Heartbeat>,
+      heartbeats: [] as Heartbeat[],
       environments: [],
       loading: false,
-      error: null,
-    };
+      error: null as Error | null,
+      envSelected: null as string | null, // Add envSelected to the state
+    }
   },
 
   actions: {
@@ -34,11 +35,19 @@ export const useHeartbeatStore = defineStore("alert", {
     fetchHeartbeats: async function () {
       this.loading = true
       try {
-        console.log("fetchHeartbeats")
-        this.heartbeats = await AlertsApi.getHeartbeats({})
+        console.log('fetchHeartbeats')
+        const data = await AlertsApi.getHeartbeats({})
+
+        this.heartbeats = data.map((hb: any) => ({
+          ...hb,
+          HasAlerts: hb.Status === 'Offline',
+        }))
       } catch (error) {
-        // @ts-ignore
-        this.error = error
+        if (error instanceof Error) {
+          this.error = error
+        } else {
+          this.error = new Error(String(error))
+        }
         console.log(error)
       } finally {
         this.loading = false
@@ -50,8 +59,11 @@ export const useHeartbeatStore = defineStore("alert", {
       try {
         this.environments = await AlertsApi.getEnvs({})
       } catch (error) {
-        // @ts-ignore
-        this.error = error
+        if (error instanceof Error) {
+          this.error = error
+        } else {
+          this.error = new Error(String(error))
+        }
         console.log(error)
       } finally {
         this.loading = false
@@ -84,4 +96,4 @@ export const useHeartbeatStore = defineStore("alert", {
     //   }
     // }
   },
-});
+})

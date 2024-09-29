@@ -4,7 +4,6 @@ import axios from 'axios'
 let queryInProgress: any
 
 export default {
-
   getAlerts(query: object) {
     if (query && queryInProgress) {
       queryInProgress.cancel('Too many search requests. Cancelling current query.')
@@ -12,7 +11,7 @@ export default {
     queryInProgress = axios.CancelToken.source()
     const config = {
       params: query,
-      cancelToken: queryInProgress.token
+      cancelToken: queryInProgress.token,
     }
     return api.get('/api/alerts', config)
   },
@@ -24,7 +23,7 @@ export default {
     queryInProgress = axios.CancelToken.source()
     const config = {
       params: query,
-      cancelToken: queryInProgress.token
+      cancelToken: queryInProgress.token,
     }
     return api.get('/api/heartbeats', config)
   },
@@ -45,6 +44,5 @@ export default {
       return api.delete(`/api/alert/${id}`)
     }
     return api.patch(`/api/alert/${id}?action=${action}`)
-  }
-
+  },
 }

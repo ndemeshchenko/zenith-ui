@@ -1,61 +1,62 @@
-import { defineStore } from "pinia";
+import { defineStore } from 'pinia'
 import AlertsApi from '../services/api/alert.service'
 
-class Alert {
-  ID: string = "";
-  Resource: string = "";
-  Event: string = "";
-  Environment: string = "";
-  SeverityCode: string = "";
-  SeverityName: string = "";
-  Correlate: string = "";
-  Status: string = "";
-  Service: string = "";
-  Group: string = "";
-  Value: string = "";
-  Text: string = "";
-  Summary: string = "";
-  Tags: string = "";
-  Attributes: string = "";
-  Origin: string = "";
-  Type: string = "";
-  FingerPrint: string = "";
-  GeneratorURL: string = "";
-  RunbookURL: string = "";
-  CreateTime: string = "";
-  TimeOut: string = "";
-  RawData: string = "";
-  DuplicateCount: string = "";
-  Repeat: boolean = false;
-  PreviousSeverity: string = "";
-  TrendIndication: string = "";
-  ReceiveTime: string = "";
-  UpdateTime: string = "";
+export interface Alert {
+  ID: string
+  Resource: string
+  Event: string
+  Environment: string
+  Cluster: string // Add this if it's part of your data
+  SeverityCode: string
+  SeverityName: string
+  Correlate: string
+  Status: string
+  Service: string
+  Group: string
+  Value: string
+  Text: string
+  Summary: string
+  Tags: string
+  Attributes: string
+  Origin: string
+  Type: string
+  FingerPrint: string
+  GeneratorURL: string
+  RunbookURL: string
+  CreateTime: string
+  TimeOut: string
+  RawData: string
+  DuplicateCount: string
+  Repeat: boolean
+  PreviousSeverity: string
+  TrendIndication: string
+  ReceiveTime: string
+  UpdateTime: string
 }
 
+interface Environment {
+  Name: string
+  Count: number
+  // anything more
+}
 
-
-export const useAlertStore = defineStore("alert", {
+export const useAlertStore = defineStore('alert', {
   state: () => {
     return {
-      alerts: Array<Alert>,
-      heartbeats: Array<Alert>,
-      environments: [],
+      alerts: [] as Alert[],
+      heartbeats: [] as Alert[],
+      environments: [] as Environment[],
       loading: false,
-      alert: {
-        type: "",
-        message: "",
-        show: false,
-      },
-      alertsFilter: {},
-      envSelected: "",
-      error: null,
-    };
+      alert: null as Alert | null,
+      alertsFilter: {} as any,
+      envSelected: null as string | null,
+      error: null as Error | null,
+    }
   },
 
   actions: {
     makeFilter() {
-      console.log("makeFilter", this.envSelected)
+      console.log('makeFilter', this.envSelected)
       if (this.envSelected) {
         this.alertsFilter = { ...this.alertsFilter, environment: this.envSelected }
       } else {
@@ -66,10 +67,14 @@ export const useAlertStore = defineStore("alert", {
     fetchAlerts: async function () {
       this.loading = true
       try {
-        console.log("fetchAlerts", this.alertsFilter)
+        console.log('fetchAlerts', this.alertsFilter)
         this.alerts = await AlertsApi.getAlerts(this.alertsFilter)
       } catch (error) {
-        this.error = error
+        if (error instanceof Error) {
+          this.error = error
+        } else {
+          this.error = new Error(String(error))
+        }
         console.log(error)
       } finally {
         this.loading = false
@@ -79,10 +84,14 @@ export const useAlertStore = defineStore("alert", {
     fetchHeartbeats: async function () {
       this.loading = true
       try {
-        console.log("fetchHeartbeats")
+        console.log('fetchHeartbeats')
         this.heartbeats = await AlertsApi.getHeartbeats(this.alertsFilter)
       } catch (error) {
-        this.error = error
+        if (error instanceof Error) {
+          this.error = error
+        } else {
+          this.error = new Error(String(error))
+        }
         console.log(error)
       } finally {
         this.loading = false
@@ -94,7 +103,11 @@ export const useAlertStore = defineStore("alert", {
       try {
         this.environments = await AlertsApi.getEnvs({})
       } catch (error) {
-        this.error = error
+        if (error instanceof Error) {
+          this.error = error
+        } else {
+          this.error = new Error(String(error))
+        }
         console.log(error)
       } finally {
         this.loading = false
@@ -117,7 +130,7 @@ export const useAlertStore = defineStore("alert", {
     async actionAlert(id: string, action: string) {
       this.loading = true
       try {
-        console.log("actionAlert", id, action)
+        console.log('actionAlert', id, action)
         this.alert = await AlertsApi.actionAlert(id, action)
       } catch (error) {
         // this.error = error
@@ -125,6 +138,6 @@ export const useAlertStore = defineStore("alert", {
       } finally {
         this.loading = false
       }
-    }
+    },
   },
-});
+})

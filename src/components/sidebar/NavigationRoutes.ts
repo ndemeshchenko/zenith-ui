@@ -31,7 +31,7 @@ export default {
       meta: {
         icon: 'fa-heart-pulse',
       },
-    }
+    },
     // {
     //   name: 'statistics',
     //   displayName: 'menu.statistics',

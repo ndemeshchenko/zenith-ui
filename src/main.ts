@@ -14,7 +14,6 @@ import axios from 'axios'
 
 const app = createApp(App)
 
-
 bootstrap.getConfig().then((config) => {
   app.use(stores)
   app.use(router)
@@ -23,7 +22,7 @@ bootstrap.getConfig().then((config) => {
 
   app.config.globalProperties.$config = config
   axios.defaults.baseURL = config.endpoint
-  axios.defaults.headers.common['Authorization'] = `Bearer ${config.api_token}`;
+  axios.defaults.headers.common['Authorization'] = `Bearer ${config.api_token}`
 
   app.config.globalProperties.$dayjs = dayjs
 
@@ -39,5 +38,3 @@ bootstrap.getConfig().then((config) => {
 
   app.mount('#app')
 })
-
-

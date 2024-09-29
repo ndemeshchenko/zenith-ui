@@ -16,8 +16,8 @@
               </tr>
             </thead>
 
-            <tbody>
-              <tr v-for="alert in alerts" :key="alert.ID" @click="selectItem(alert.ID)" v-if="alerts.length > 0">
+            <tbody v-if="alerts.length > 0">
+              <tr v-for="alert in alerts" :key="alert.ID" @click="selectItem(alert.ID)">
                 <td>
                   <mark :class="'alert-severity alert-severity-' + alert.SeverityName">
                     {{ alert.SeverityName }}
@@ -54,14 +54,18 @@
 
   const { alerts } = storeToRefs(useAlertStore())
 
-  const emit = defineEmits(['set-alert'])
+  const emit = defineEmits(['set-alert', 'action-alert'])
+  // const emit = defineEmits<{
+  //   setAlert: (id: string) => void
+  //   actionAlert: (action: string, id: string) => void
+  // }>()
 
   const selectItem = (id: string) => {
     emit('set-alert', id)
   }
 
   const ackAlert = (id: string) => {
-    emit('action-alert', 'ackknowledge', id)
+    emit('action-alert', 'acknowledge', id)
   }
 
   const resolveAlert = (id: string) => {

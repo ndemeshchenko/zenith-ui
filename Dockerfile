@@ -1,13 +1,29 @@
-FROM node:14
+# Stage 1: Build the application
+FROM node:lts-alpine AS build-stage
 
+# Set the working directory
 WORKDIR /app
 
-COPY . /app
+# Copy package.json and package-lock.json (if available)
+COPY package*.json ./
 
-EXPOSE 8080
+# Install dependencies
+RUN npm install
 
-RUN npm install http-server -g
+# Copy the rest of your application code
+COPY . .
 
-RUN npm install --no-optional && npm run build
+# Build the application for production
+RUN npm run build
 
-CMD http-server ./dist
+# Stage 2: Serve the built app with Nginx
+FROM nginx:stable-alpine AS production-stage
+
+# Copy the built files from the previous stage
+COPY --from=build-stage /app/dist /usr/share/nginx/html
+
+# Expose port 80
+EXPOSE 80
+
+# Start Nginx when the container launches
+CMD ["nginx", "-g", "daemon off;"]
