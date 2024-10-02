@@ -13,7 +13,7 @@ const api = {
   delete(url: string, config?: AxiosRequestConfig) {
     return this.request('DELETE', url, null, config)
   },
-  request(method: Method, url: string, data?: any, config?: AxiosRequestConfig) {
+  async request(method: Method, url: string, data?: any, config?: AxiosRequestConfig) {
     // const t0 = performance.now()
     return axios.request({ ...config, url, method, data }).then((response) => {
       // const t1 = performance.now()

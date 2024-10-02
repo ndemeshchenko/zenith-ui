@@ -43,10 +43,14 @@ class Config {
 
       if (import.meta.env['VITE_ZENITH_ENDPOINT']) {
         envConfig['endpoint'] = import.meta.env['VITE_ZENITH_ENDPOINT']
+      } else {
+        reject('No endpoint provided via VITE_ZENITH_ENDPOINT')
       }
 
       if (import.meta.env['VITE_ZENITH_API_TOKEN']) {
         envConfig['api_token'] = import.meta.env['VITE_ZENITH_API_TOKEN']
+      } else {
+        reject('No api token provided via VITE_ZENITH_API_TOKEN')
       }
       // if (process.env.VUE_APP_CLIENT_ID) {
       //   envConfig['client_id'] = process.env.VUE_APP_CLIENT_ID
