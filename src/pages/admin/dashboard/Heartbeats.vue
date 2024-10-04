@@ -7,12 +7,9 @@
 <script setup lang="ts">
   import HeartbeatsList from '../../../components/alerts/HeartbeatsList.vue'
   import { useRouter } from 'vue-router'
-  // import { useAlertStore } from '../../../stores/alert-store'
   import { useHeartbeatStore } from '../../../stores/heartbeat-store'
   import { onMounted } from 'vue'
-  import { storeToRefs } from 'pinia'
 
-  const { environments, envSelected } = storeToRefs(useHeartbeatStore())
   const router = useRouter()
 
   const setAlert = (item: any) => {

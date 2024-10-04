@@ -41,23 +41,22 @@ class Config {
         tracking_id: '',
       }
 
-      if (import.meta.env['VITE_ZENITH_ENDPOINT']) {
+      if (window._env_ && window._env_['VITE_ZENITH_ENDPOINT']) {
+        envConfig['endpoint'] = window._env_['VITE_ZENITH_ENDPOINT']
+      } else if (import.meta.env['VITE_ZENITH_ENDPOINT']) {
         envConfig['endpoint'] = import.meta.env['VITE_ZENITH_ENDPOINT']
       } else {
         reject('No endpoint provided via VITE_ZENITH_ENDPOINT')
       }
 
-      if (import.meta.env['VITE_ZENITH_API_TOKEN']) {
+      if (window._env_ && window._env_['VITE_ZENITH_API_TOKEN']) {
+        envConfig['api_token'] = window._env_['VITE_ZENITH_API_TOKEN']
+      } else if (import.meta.env['VITE_ZENITH_API_TOKEN']) {
         envConfig['api_token'] = import.meta.env['VITE_ZENITH_API_TOKEN']
       } else {
-        reject('No api token provided via VITE_ZENITH_API_TOKEN')
+        reject('No API token provided via VITE_ZENITH_API_TOKEN')
       }
-      // if (process.env.VUE_APP_CLIENT_ID) {
-      //   envConfig['client_id'] = process.env.VUE_APP_CLIENT_ID
-      // }
-      // if (process.env.VUE_APP_TRACKING_ID) {
-      //   envConfig['tracking_id'] = process.env.VUE_APP_TRACKING_ID
-      // }
+
       resolve(envConfig)
     })
   }

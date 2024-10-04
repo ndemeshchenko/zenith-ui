@@ -20,7 +20,7 @@
   <p></p>
 
   <div class="dashboard">
-    <alerts-list @setAlert="setAlert" @actionAlert="actionAlert" />
+    <alerts-list @set-alert="setAlert" @action-alert="actionAlert" />
   </div>
 </template>
 

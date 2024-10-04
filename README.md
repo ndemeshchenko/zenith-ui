@@ -57,6 +57,19 @@ $ yarn build
 $ yarn build --report
 ```
 
+# Deployment
+
+```shell
+helm upgrade -i zenith-ui ./zenith-ui \
+  --namespace zenith --create-namespace \
+  --set secret.VITE_ZENITH_API_TOKEN="your-api-token" \
+  --set secret.VITE_ZENITH_ENDPOINT="http://api.zenithmonitor.com:8080"
+```
+
+```shell
+kubectl get pods -n zenith
+```
+
 # Dependencies
 
 Zenith UI built on [Vuestic](https://github.com/epicmaxco/vuestic-ui) by Epicmax UI library
