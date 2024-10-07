@@ -41,14 +41,14 @@ class Config {
         tracking_id: '',
       }
 
-      if (window._env_ && window._env_['VITE_ZENITH_ENDPOINT']) {
-        envConfig['endpoint'] = window._env_['VITE_ZENITH_ENDPOINT']
-      } else if (import.meta.env['VITE_ZENITH_ENDPOINT']) {
-        envConfig['endpoint'] = import.meta.env['VITE_ZENITH_ENDPOINT']
-      } else {
-        reject('No endpoint provided via VITE_ZENITH_ENDPOINT')
-      }
-
+      // if (window._env_ && window._env_['VITE_ZENITH_ENDPOINT']) {
+      //   envConfig['endpoint'] = window._env_['VITE_ZENITH_ENDPOINT']
+      // } else if (import.meta.env['VITE_ZENITH_ENDPOINT']) {
+      //   envConfig['endpoint'] = import.meta.env['VITE_ZENITH_ENDPOINT']
+      // } else {
+      //   reject('No endpoint provided via VITE_ZENITH_ENDPOINT')
+      // }
+      //
       if (window._env_ && window._env_['VITE_ZENITH_API_TOKEN']) {
         envConfig['api_token'] = window._env_['VITE_ZENITH_API_TOKEN']
       } else if (import.meta.env['VITE_ZENITH_API_TOKEN']) {
